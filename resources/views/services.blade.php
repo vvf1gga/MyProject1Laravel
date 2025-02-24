@@ -10,7 +10,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-block-end: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
@@ -19,7 +19,7 @@
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
         .service-card h4 {
-            margin-bottom: 10px;
+            margin-block-end: 10px;
             font-size: 1.5rem;
             color: #3a3a3a;
             font-weight: 600;
@@ -30,10 +30,10 @@
             line-height: 1.6;
         }
         .child-service {
-            margin-left: 30px;
+            margin-inline-start: 30px;
             font-size: 1.1rem;
             color: #555;
-            margin-top: 10px;
+            margin-block-start: 10px;
         }
         .child-service h5 {
             font-size: 1.2rem;
@@ -42,7 +42,7 @@
         }
         .container h1 {
             font-size: 2.5rem;
-            margin-bottom: 20px;
+            margin-block-end: 20px;
             text-align: center;
             font-weight: 700;
             color: #2c3e50;
@@ -54,19 +54,19 @@
             text-align: center;
             color: #333;
             font-style: italic;
-            margin-bottom: 30px;
+            margin-block-end: 30px;
         }
         .list-group-item {
             padding: 1.25rem;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin-block-end: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .footer {
             background-color: #f8f9fa;
             padding: 20px;
             text-align: center;
-            border-top: 1px solid #e0e0e0;
+            border-block-start: 1px solid #e0e0e0;
         }
         .highlight {
             background: linear-gradient(45deg, #f9d423, #ff4e50);
