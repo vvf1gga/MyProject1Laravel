@@ -1,29 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ContractController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\CaseController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
- 
-Route::get('/contracts', function () {
-    return view('contracts');
-})->name('contracts');
+Route::post('/login', [LoginController::class, 'login'])->name('login');
 
-Route::get('/incidents', function () {
-    return view('incidents');
-})->name('incidents');
+Route::get('/', function () { return view('welcome'); })->name('welcome');
 
-Route::get('/services', function () {return view('services');});
+Route::get('/manager', [ManagerController::class, 'index'])->name('manager');
 
-Route::get('/cases', function () {return view('cases');});
+Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 
-Route::get('/reports', function () {return view('reports');});
+Route::get('/services', [ServiceController::class, 'showServices']);
 
-Route::get('/createincidents', function () {
-    return view('createincidents'); 
-});
+Route::get('/services', [ServiceController::class, 'showServices']);
+

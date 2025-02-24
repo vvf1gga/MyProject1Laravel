@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Послуги - Страхова компанія</title>
+    <title>Адмін Панель - Послуги Страхової Компанії</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .service-card {
@@ -90,7 +90,7 @@
 
     <main class="container py-5">
         <h1>Послуги Страхової Компанії</h1>
-        <p>Перегляньте доступні послуги нашої компанії, щоб дізнатися більше про те, як ми можемо допомогти вам.</p>
+        <p>Перегляньте доступні послуги нашої компанії.</p>
 
         <div class="row">
             @foreach($services as $service)
@@ -108,10 +108,23 @@
                                     </div>
                                 @endforeach
                             </div>
+                            <!-- Для адміністратора додаємо кнопки для редагування та видалення -->
+                            <div class="admin-actions mt-3">
+                                <a href="{{ route('services.edit', $service->Id) }}" class="btn btn-warning btn-sm">Редагувати</a>
+                                <form action="{{ route('services.delete', $service->Id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 @endif
             @endforeach
+        </div>
+
+        <div class="mt-5">
+            <a href="{{ route('services.create') }}" class="btn btn-primary">Додати нову послугу</a>
         </div>
     </main>
 

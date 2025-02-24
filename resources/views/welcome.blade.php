@@ -16,17 +16,14 @@
             flex-direction: column;
             min-height: 100vh;
         }
-
         header, footer {
             background-color: #222;
             color: white;
             padding: 10px;
         }
-
         main {
             flex: 1;
         }
-
         .feature-card {
             padding: 20px;
             background-color: #fff;
@@ -40,71 +37,60 @@
             transform: scale(1.05); 
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
-
         .feature-card h5 {
             font-size: 1.25rem;
             margin-bottom: 10px;
         }
-
         .feature-card p {
             color: #555;
         }
     </style>
 </head>
 <body>
-    <!-- Header with navigation -->
+    <!-- Header -->
     <header class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/Kyrsova/public/">Облік страхових договорів</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/Kyrsova/public/">Головна</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Kyrsova/public/contracts">Контракти</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Kyrsova/public/services">Послуги</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Kyrsova/public/incidents">Випадки</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Kyrsova/public/reports">Звіти</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="container text-center py-5">
         <h1>Система обліку страхових договорів</h1>
-        <p>Керуйте договорами, страховими випадками та звітністю з легкістю!</p>
-        <a href="/login" class="btn btn-light">Увійти до системи</a>
+        <p>Спочатку увійдіть у систему, обравши вашу роль</p>
 
-        <!-- Features Section -->
+        <!-- Виведення помилки при неправильному паролі -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row my-5">
-            <div class="col-md-4">
-                <a href="/Kyrsova/public/contracts" class="feature-card d-block">
-                    <h5>Облік контрактів</h5>
-                    <p>Зберігайте всі дані про договори в одному місці.</p>
-                </a>
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-12 mb-3">
                 <a href="/Kyrsova/public/services" class="feature-card d-block">
-                    <h5>Оптимізація платежів</h5>
-                    <p>Контролюйте своєчасність виплат.</p>
+                    <h5>Гість</h5>
+                    <p>Доступен перегляд Послуг</p>
                 </a>
             </div>
-            <div class="col-md-4">
-                <a href="/Kyrsova/public/reports" class="feature-card d-block">
-                    <h5>Звітність</h5>
-                    <p>Автоматична генерація звітів для аналізу.</p>
+            <div class="col-md-12 mb-3">
+                <!-- Менеджер -->
+                <a href="#" class="feature-card d-block role-select" data-bs-toggle="modal" data-bs-target="#passwordModal" data-role="manager">
+                    <h5>Менеджер</h5>
+                    <p>Доступ тільки для працівників компанії</p>
+                </a>
+            </div>
+            <div class="col-md-12 mb-3">
+                <!-- Адмін -->
+                <a href="#" class="feature-card d-block role-select" data-bs-toggle="modal" data-bs-target="#passwordModal" data-role="admin">
+                    <h5>Адмін</h5>
+                    <p>Доступ строго для адміністрації компанії</p>
                 </a>
             </div>
         </div>
@@ -115,6 +101,52 @@
         <p>© 2024 Курсовий проект.</p>
     </footer>
 
+    <!-- Password Modal -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">Введіть пароль</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('login') }}" id="loginForm">
+                        @csrf
+                        <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Введіть пароль" required>
+                        <input type="hidden" id="roleInput" name="role">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+                    <button type="button" class="btn btn-primary" id="loginButton">Вхід</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let selectedRole = null;
+
+        // Запам’ятовуємо роль при відкритті модального вікна
+        document.querySelectorAll(".role-select").forEach(button => {
+            button.addEventListener("click", function () {
+                selectedRole = this.getAttribute("data-role");
+                document.getElementById("roleInput").value = selectedRole; // Встановлюємо значення ролі
+                document.getElementById("passwordInput").value = ""; 
+            });
+        });
+
+        // Обробник для кнопки входу
+        document.getElementById("loginButton").addEventListener("click", function () {
+            document.getElementById("loginForm").submit(); // Відправляємо форму на сервер
+        });
+
+        // Очищення поля при закритті модального вікна
+        document.getElementById("passwordModal").addEventListener("hidden.bs.modal", function () {
+            document.getElementById("passwordInput").value = "";
+        });
+    </script>
 </body>
 </html>
