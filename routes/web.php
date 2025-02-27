@@ -12,9 +12,8 @@ Route::get('/', function () { return view('welcome'); })->name('welcome');
 
 Route::get('/manager', [ManagerController::class, 'index'])->name('manager');
 
-Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+Route::get('/admin', [AdminController::class, 'index']);
 
 Route::get('/services', [ServiceController::class, 'showServices']);
 
-Route::get('/services', [ServiceController::class, 'showServices']);
 

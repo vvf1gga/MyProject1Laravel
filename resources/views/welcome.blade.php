@@ -14,7 +14,7 @@
             color: #333;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-block-size: 100vh;
         }
         header, footer {
             background-color: #222;
@@ -39,7 +39,7 @@
         }
         .feature-card h5 {
             font-size: 1.25rem;
-            margin-bottom: 10px;
+            margin-block-end: 10px;
         }
         .feature-card p {
             color: #555;

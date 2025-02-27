@@ -6,51 +6,76 @@
     <title>Послуги - Страхова компанія</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        html, body {
-            block-size: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        .container {
-            flex: 1;
-            max-inline-size: 1200px;
-            margin: 20px auto;
+        .service-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-block-end: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-
-        h1 {
-            font-size: 2rem;
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .service-card h4 {
+            margin-block-end: 10px;
+            font-size: 1.5rem;
+            color: #3a3a3a;
+            font-weight: 600;
+        }
+        .service-card p {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        .child-service {
+            margin-inline-start: 30px;
+            font-size: 1.1rem;
+            color: #555;
+            margin-block-start: 10px;
+        }
+        .child-service h5 {
+            font-size: 1.2rem;
+            color: #007bff;
+            font-weight: 500;
+        }
+        .container h1 {
+            font-size: 2.5rem;
             margin-block-end: 20px;
             text-align: center;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
-
-        .table th, .table td {
+        .container p {
+            font-size: 1.2rem;
             text-align: center;
-            vertical-align: middle;
+            color: #333;
+            font-style: italic;
+            margin-block-end: 30px;
         }
-
-        .btn {
-            font-size: 1rem;
-            padding: 8px 15px;
+        .list-group-item {
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-block-end: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        header, footer {
-            background-color: #222;
-            color: white;
-            padding: 10px;
+        .footer {
+            background-color: #f8f9fa;
+            padding: 15px;
             text-align: center;
+            border-block-start: 1px solid #e0e0e0;
+        }
+        .highlight {
+            color: transparent;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <header class="navbar navbar-expand-lg navbar-dark bg-success">
+<header class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container-fluid">
             <a class="navbar-brand" href="/Kyrsova/public/">Облік страхових договорів</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -63,7 +88,7 @@
                         <a class="nav-link" href="/Kyrsova/public/contracts">Контракти</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/Kyrsova/public/services">Послуги</a>
+                        <a class="nav-link active" href="/Kyrsova/public/admin">Послуги</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Kyrsova/public/incidents">Випадки</a>
@@ -76,46 +101,37 @@
         </div>
     </header>
 
-    <div class="container">
-        <h1>Управління послугами</h1>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Назва послуги</th>
-                    <th>Опис</th>
-                    <th>Ціна</th>
-                    <th>Дії</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Автострахування</td>
-                    <td>Повне КАСКО</td>
-                    <td>5000 грн</td>
-                    <td>
-                        <button class="btn btn-warning">Редагувати</button>
-                        <button class="btn btn-danger">Видалити</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Медичне страхування</td>
-                    <td>Договір на рік</td>
-                    <td>12000 грн</td>
-                    <td>
-                        <button class="btn btn-warning">Редагувати</button>
-                        <button class="btn btn-danger">Видалити</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-success">Додати нову послугу</button>
-    </div>
+    <main class="container py-5">
+        <h1>Послуги Страхової Компанії</h1>
 
-    <footer>
-        <p>&copy; 2024 Курсовий проект.</p>
+        <div class="row">
+            @foreach($services as $service)
+                @if($service->ParentServiceId == null) <!-- Це батьківська послуга -->
+                    <div class="col-md-6">
+                        <div class="service-card">
+                            <h4 class="highlight">{{ $service->Name }}</h4>
+                            <p>{{ $service->Description }}</p>
+                            <!-- Виводимо дочірні послуги -->
+                            <div class="child-services">
+                                @foreach($services->where('ParentServiceId', $service->Id) as $childService)
+                                    <div class="child-service">
+                                        <h5>{{ $childService->Name }}</h5>
+                                        <p>{{ $childService->Description }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2024 Курсовий проект. Страхова компанія</p>
+        <p>Роль: Адміністратор</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

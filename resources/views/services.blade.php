@@ -69,8 +69,6 @@
             border-block-start: 1px solid #e0e0e0;
         }
         .highlight {
-            background: linear-gradient(45deg, #f9d423, #ff4e50);
-            -webkit-background-clip: text;
             color: transparent;
             font-weight: 600;
         }
