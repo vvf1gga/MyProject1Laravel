@@ -37,7 +37,7 @@
         }
         .child-service h5 {
             font-size: 1.2rem;
-            color: #007bff;
+            color: #555;
             font-weight: 500;
         }
         .container h1 {

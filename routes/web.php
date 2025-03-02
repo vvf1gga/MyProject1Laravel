@@ -12,8 +12,11 @@ Route::get('/', function () { return view('welcome'); })->name('welcome');
 
 Route::get('/manager', [ManagerController::class, 'index'])->name('manager');
 
-Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
-Route::get('/services', [ServiceController::class, 'showServices']);
+Route::get('/services', [ServiceController::class, 'showServices'])->name('services');
 
+Route::post('/admin', [AdminController::class, 'store'])->name('admin.store');
+
+Route::delete('/admin', [AdminController::class, 'destroy'])->name('admin.delete');
 

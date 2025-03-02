@@ -13,6 +13,8 @@ class InsuranceService extends Model
 
     protected $fillable = ['Name', 'Description', 'ParentServiceId']; 
 
+    public $timestamps = false;
+
     public function parentService(){
     return $this->belongsTo(InsuranceService::class, 'ParentServiceId');
     }
