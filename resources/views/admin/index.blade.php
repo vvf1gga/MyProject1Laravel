@@ -6,6 +6,7 @@
     <title>Послуги - Страхова компанія</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         .service-card {
             border: 1px solid #e0e0e0;
@@ -96,16 +97,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/Kyrsova/public/contracts">Контракти</a>
+                    <a class="nav-link" href="{{ route('admin.contracts') }}">Контракти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/Kyrsova/public/admin">Послуги</a>
+                    <a class="nav-link active" href="{{ route('admin.index') }}">Послуги</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Kyrsova/public/incidents">Випадки</a>
+                    <a class="nav-link" href="{{ route('admin.incidents') }}">Випадки</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Kyrsova/public/reports">Звіти</a>
+                    <a class="nav-link" href="{{ route('admin.payouts') }}">Виплати</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.repts') }}">Звіти</a>
                 </li>
             </ul>
         </div>
@@ -116,39 +120,37 @@
     <h1 class="text-center">Послуги Страхової Компанії</h1>
 
     <div class="mb-4 d-flex justify-content-end">
-        <button class="btn btn-outline-success d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addServiceModal">
-            <i class="bi bi-plus-circle me-1"></i> Додати послугу
-        </button>
+        <button class="btn btn-outline-success d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addServiceModal"><i class="bi bi-plus-circle me-1"></i> Додати послугу</button>
     </div>
 
     <div class="row">
-        @foreach($services as $service)
-            @if($service->ParentServiceId == null)
-                <div class="col-md-6">
-                    <div class="service-card">
-                        <h4 class="highlight">{{ $service->Name }}
-                            <!-- Иконки редактирования и удаления для родительской услуги -->
-                            <i class="bi bi-pencil icon-medium ms-2"></i>
-                            <i class="bi bi-trash icon-medium ms-2"></i>
-                        </h4>
-                        <p>{{ $service->Description }}</p>
-                        <div class="child-services">
-                            @foreach($services->where('ParentServiceId', $service->Id) as $childService)
-                                <div class="child-service">
-                                    <h5>{{ $childService->Name }}
-                                        <!-- Иконки редактирования и удаления для дочерней услуги -->
-                                        <i class="bi bi-pencil icon-medium ms-2"></i>
-                                        <i class="bi bi-trash icon-medium ms-2"></i>
-                                    </h5>
-                                    <p>{{ $childService->Description }}</p>
-                                </div>
-                            @endforeach
-                        </div>
+    @foreach($services as $service)
+        @if($service->ParentServiceId == null)
+            <div class="col-md-6">
+                <div class="service-card">
+                    <h4 class="highlight">
+                        {{ $service->Name }}
+                        <i class="bi bi-pencil icon-medium ms-2"></i>
+                        <i class="bi bi-trash icon-medium ms-2 text-danger" data-bs-toggle="modal" data-bs-target="#deleteServiceModal" data-id="{{ $service->Id }}" onclick="setDeleteAction(this)"></i>
+                    </h4>
+                    <p>{{ $service->Description }}</p>
+
+                    <div class="child-services">
+                        @foreach($services->where('ParentServiceId', $service->Id) as $childService)
+                            <div class="child-service">
+                                <h5>
+                                    {{ $childService->Name }}
+                                    <i class="bi bi-pencil icon-medium ms-2"></i>
+                                    <i class="bi bi-trash icon-medium ms-2 text-danger" data-bs-toggle="modal" data-bs-target="#deleteServiceModal" data-id="{{ $service->Id }}" onclick="setDeleteAction(this)"></i>                                </h5>
+                                <p>{{ $childService->Description }}</p>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
-            @endif
-        @endforeach
-    </div>
+            </div>
+        @endif
+    @endforeach
+</div>
 </main>
 
 <!-- Модальне вікно -->
@@ -191,6 +193,5 @@
     <p>Роль: Адміністратор</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

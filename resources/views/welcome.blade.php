@@ -47,7 +47,7 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+
     <header class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,12 +56,10 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container text-center py-5">
         <h1>Система обліку страхових договорів</h1>
         <p>Спочатку увійдіть у систему, обравши вашу роль</p>
 
-        <!-- Виведення помилки при неправильному паролі -->
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -80,14 +78,12 @@
                 </a>
             </div>
             <div class="col-md-12 mb-3">
-                <!-- Менеджер -->
                 <a href="#" class="feature-card d-block role-select" data-bs-toggle="modal" data-bs-target="#passwordModal" data-role="manager">
                     <h5>Менеджер</h5>
                     <p>Доступ тільки для працівників компанії</p>
                 </a>
             </div>
             <div class="col-md-12 mb-3">
-                <!-- Адмін -->
                 <a href="#" class="feature-card d-block role-select" data-bs-toggle="modal" data-bs-target="#passwordModal" data-role="admin">
                     <h5>Адмін</h5>
                     <p>Доступ строго для адміністрації компанії</p>
@@ -96,12 +92,10 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="text-center py-3">
         <p>© 2024 Курсовий проект.</p>
     </footer>
 
-    <!-- Password Modal -->
     <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
